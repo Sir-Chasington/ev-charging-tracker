@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EV Charging Tracker</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <h1>EV Charging Cost Tracker</h1>
+  <form id="chargingForm">
+    <div class="form-header">
+      <label for="batteryCapacity">Battery Capacity (kWh at 100%):</label>
+      <div id="carMakeContainer">
+        <input type="text" id="carMake" placeholder="Enter Car's Make" onchange="saveCarMake()" />
+        <span id="carMakeDisplay" style="display: none;"></span>
+      </div>
+    </div>
+    <input type="number" id="batteryCapacity" placeholder="Cars KWh (ie 87)" step="0.1" required><br>
+
+    <label for="electricityCost">Electricity Cost (per kWh in $):</label><br>
+    <input type="number" id="electricityCost" placeholder="Cost per KWh" step="0.01" required><br>
+
+    <label for="currentPercentage">Current Battery Percentage (%):</label><br>
+    <input type="number" id="currentPercentage" placeholder="Battery %" min="0" max="100" required><br>
+
+    <label for="chargeDate">Date of Charge:</label><br>
+    <input type="date" id="chargeDate" required><br>
+
+    <button type="button" onclick="calculateAndAdd()">Add Charge</button>
+  </form>
+
+  <h2>Charging History</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>kWh Needed</th>
+        <th>Cost ($)</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="chargeHistory"></tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3"><strong>Total Cost:</strong></td>
+        <td id="totalCost">$0.00</td>
+      </tr>
+    </tfoot>
+  </table>
+  
+
+  <script src="index.js"></script>
+</body>
+</html>

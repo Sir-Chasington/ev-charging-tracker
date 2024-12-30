@@ -8,7 +8,7 @@ function updateOldEntries() {
   chargeHistory.forEach((entry) => {
     if (entry.percentCharged === undefined) {
       // Set "Unknown" for missing percentCharged
-      entry.percentCharged = "Unknown";
+      entry.percentCharged = "-";
       updated = true;
     }
   });
@@ -66,7 +66,7 @@ function renderHistory() {
     const percentCharged =
       entry.percentCharged !== undefined && entry.percentCharged !== "Unknown"
         ? `${entry.percentCharged}% charged`
-        : "Unknown";
+        : "-";
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${entry.date}</td>

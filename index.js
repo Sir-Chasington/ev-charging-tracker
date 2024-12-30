@@ -3,12 +3,15 @@ let totalCost = chargeHistory.reduce((sum, entry) => sum + entry.cost, 0);
 
 // Update old entries missing "percentCharged" data
 function updateOldEntries() {
-  const batteryCapacity = parseFloat(document.getElementById("batteryCapacity").value) || 100; // Default to 100kWh if not set
+  // Retrieve the battery capacity from the input field or set a default
+  const batteryCapacity = parseFloat(document.getElementById("batteryCapacity").value) || 100; // Default to 100kWh
+
   let updated = false;
 
   chargeHistory.forEach((entry) => {
-    if (entry.percentCharged === undefined && entry.kWh !== undefined) {
-      entry.percentCharged = ((entry.kWh / batteryCapacity) * 100).toFixed(2); // Calculate percent charged
+    if (entry.percentCharged === undefined && entry.kWh !== undefined && batteryCapacity > 0) {
+      // Calculate the percent charged
+      entry.percentCharged = ((entry.kWh / batteryCapacity) * 100).toFixed(2);
       updated = true;
     }
   });
@@ -62,7 +65,8 @@ function renderHistory() {
   tableBody.innerHTML = ""; // Clear existing table rows
 
   chargeHistory.forEach((entry, index) => {
-    const percentCharged = entry.percentCharged !== undefined ? `${entry.percentCharged}% charged` : "N/A";
+    const percentCharged =
+      entry.percentCharged !== undefined ? `${entry.percentCharged}% charged` : "N/A";
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${entry.date}</td>

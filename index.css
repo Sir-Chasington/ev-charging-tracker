@@ -9,6 +9,10 @@ body {
     max-width: 800px;
     margin: auto;
 }
+
+input {
+    margin: 0 0 12px;
+}
   
 /* Form Styling */
 form {
@@ -23,7 +27,6 @@ form {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
 }
 
 form label {
@@ -52,7 +55,6 @@ form label {
 form input, form button {
     width: 100%;
     padding: 10px;
-    margin-top: 5px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -116,6 +118,29 @@ h1, h2 {
     text-align: center;
     color: #4caf50;
 }
+
+/* Trash Can Icon */
+.trash-icon {
+    cursor: pointer;
+    color: #e74c3c; /* Red for delete icon */
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  .trash-icon:hover {
+    color: #c0392b; /* Darker red on hover */
+  }
+
+  .charge-to-full-container {
+    width: 20px;
+    white-space: nowrap; /* Prevents text from breaking into multiple lines */
+  }
+  
+  .charge-to-full-container span {
+    margin-right: 10px; /* Adds spacing between the text and the checkbox */
+    font-weight: bold;
+  }
+  
   
 /* Responsive Design */
 @media (max-width: 600px) {
@@ -138,17 +163,4 @@ h1, h2 {
         padding: 10px;
         font-size: 14px;
     }
-}
-
-/* Trash Can Icon */
-.trash-icon {
-    cursor: pointer;
-    color: #e74c3c; /* Red for delete icon */
-    font-size: 1.2rem;
-    text-align: center;
-  }
-  
-  .trash-icon:hover {
-    color: #c0392b; /* Darker red on hover */
-  }
-  
+}  

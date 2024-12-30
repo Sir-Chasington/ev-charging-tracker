@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EV Charging Tracker</title>
   <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
   <h1>EV Charging Cost Tracker</h1>
   <form id="chargingForm">
@@ -16,16 +18,27 @@
         <span id="carMakeDisplay" style="display: none;"></span>
       </div>
     </div>
-    <input type="number" id="batteryCapacity" placeholder="Cars KWh (ie 87)" step="0.1" required><br>
+    <input type="number" id="batteryCapacity" placeholder="Cars KWh (ie 87)" step="0.1" required>
 
-    <label for="electricityCost">Electricity Cost (per kWh in $):</label><br>
-    <input type="number" id="electricityCost" placeholder="Cost per KWh" step="0.01" required><br>
+    <label for="electricityCost">Electricity Cost (per kWh in $):</label>
+    <input type="number" id="electricityCost" placeholder="Cost per KWh" step="0.01" required>
 
-    <label for="currentPercentage">Current Battery Percentage (%):</label><br>
-    <input type="number" id="currentPercentage" placeholder="Battery %" min="0" max="100" required><br>
+    <label for="currentPercentage">Percentage (%) Charge Start:</label>
+    <input type="number" id="currentPercentage" placeholder="Battery %" min="0" max="100" required>
 
-    <label for="chargeDate">Date of Charge:</label><br>
-    <input type="date" id="chargeDate" required><br>
+    <div class="charge-to-full-container">
+      <span>Charge to 100%</span>
+      <input type="checkbox" id="chargeToFull" checked onchange="toggleEndPercentage()" />
+    </div>
+       
+
+    <div id="endPercentageContainer" style="display: none;">
+      <label for="endPercentage">Percentage (%) Charged To:</label>
+      <input type="number" id="endPercentage" placeholder="% Charged To" min="0" max="100">
+    </div>
+
+    <label for="chargeDate">Date of Charge:</label>
+    <input type="date" id="chargeDate" required>
 
     <button type="button" onclick="calculateAndAdd()">Add Charge</button>
   </form>
@@ -36,6 +49,7 @@
       <tr>
         <th>Date</th>
         <th>kWh Needed</th>
+        <th>Percent Charged</th>
         <th>Cost ($)</th>
         <th>Action</th>
       </tr>
@@ -43,13 +57,13 @@
     <tbody id="chargeHistory"></tbody>
     <tfoot>
       <tr>
-        <td colspan="3"><strong>Total Cost:</strong></td>
+        <td colspan="4"><strong>Total Cost:</strong></td>
         <td id="totalCost">$0.00</td>
       </tr>
     </tfoot>
   </table>
-  
 
-  <script src="index.js"></script>
+  <script src="index.min.js"></script>
 </body>
+
 </html>

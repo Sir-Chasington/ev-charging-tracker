@@ -27,6 +27,18 @@ function saveCarMake() {
   }
 }
 
+// Show or hide the "End Percentage" input based on the toggle state
+function toggleEndPercentage() {
+  const chargeToFull = document.getElementById("chargeToFull").checked;
+  const endPercentageContainer = document.getElementById("endPercentageContainer");
+
+  if (chargeToFull) {
+    endPercentageContainer.style.display = "none";
+  } else {
+    endPercentageContainer.style.display = "block";
+  }
+}
+
 // Charging History
 function renderHistory() {
   const tableBody = document.getElementById("chargeHistory");
@@ -37,6 +49,7 @@ function renderHistory() {
     row.innerHTML = `
       <td>${entry.date}</td>
       <td>${entry.kWh.toFixed(2)} kWh</td>
+      <td>${entry.percentCharged}% charged</td>
       <td>$${entry.cost.toFixed(2)}</td>
       <td class="trash-icon" onclick="deleteEntry(${index})">🗑️</td>
     `;
@@ -72,16 +85,30 @@ function calculateAndAdd() {
     return;
   }
 
-  const kWhNeeded = batteryCapacity * ((100 - currentPercentage) / 100);
+  const chargeToFull = document.getElementById("chargeToFull").checked;
+  let endPercentage = 100; // Default to 100% if toggle is checked
+
+  if (!chargeToFull) {
+    endPercentage = parseFloat(document.getElementById("endPercentage").value);
+    if (isNaN(endPercentage) || endPercentage <= currentPercentage || endPercentage > 100) {
+      alert("Please enter a valid end percentage greater than current percentage and less than or equal to 100.");
+      return;
+    }
+  }
+
+  const percentCharged = endPercentage - currentPercentage;
+  const kWhNeeded = batteryCapacity * (percentCharged / 100);
   const cost = kWhNeeded * electricityCost;
 
-  const newEntry = { date: chargeDate, kWh: kWhNeeded, cost };
+  const newEntry = { date: chargeDate, kWh: kWhNeeded, cost, percentCharged };
   chargeHistory.push(newEntry);
   localStorage.setItem("chargeHistory", JSON.stringify(chargeHistory));
 
   totalCost += cost;
   renderHistory();
   document.getElementById("chargingForm").reset();
+  document.getElementById("chargeToFull").checked = true; // Reset toggle
+  toggleEndPercentage(); // Reset end percentage input visibility
 }
 
 // Initialize car make and render history on page load

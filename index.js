@@ -1,6 +1,23 @@
 const chargeHistory = JSON.parse(localStorage.getItem("chargeHistory")) || [];
 let totalCost = chargeHistory.reduce((sum, entry) => sum + entry.cost, 0);
 
+// Update old entries missing "percentCharged" data
+function updateOldEntries() {
+  const batteryCapacity = parseFloat(document.getElementById("batteryCapacity").value) || 100; // Default to 100kWh if not set
+  let updated = false;
+
+  chargeHistory.forEach((entry) => {
+    if (entry.percentCharged === undefined && entry.kWh !== undefined) {
+      entry.percentCharged = ((entry.kWh / batteryCapacity) * 100).toFixed(2); // Calculate percent charged
+      updated = true;
+    }
+  });
+
+  if (updated) {
+    localStorage.setItem("chargeHistory", JSON.stringify(chargeHistory));
+  }
+}
+
 // Car Make
 function initializeCarMake() {
   const carMake = localStorage.getItem("carMake");
@@ -45,11 +62,12 @@ function renderHistory() {
   tableBody.innerHTML = ""; // Clear existing table rows
 
   chargeHistory.forEach((entry, index) => {
+    const percentCharged = entry.percentCharged !== undefined ? `${entry.percentCharged}% charged` : "N/A";
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${entry.date}</td>
       <td>${entry.kWh.toFixed(2)} kWh</td>
-      <td>${entry.percentCharged}% charged</td>
+      <td>${percentCharged}</td>
       <td>$${entry.cost.toFixed(2)}</td>
       <td class="trash-icon" onclick="deleteEntry(${index})">🗑️</td>
     `;
@@ -111,6 +129,7 @@ function calculateAndAdd() {
   toggleEndPercentage(); // Reset end percentage input visibility
 }
 
-// Initialize car make and render history on page load
+// Initialize car make, update old entries, and render history on page load
 initializeCarMake();
+updateOldEntries();
 renderHistory();
